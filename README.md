@@ -52,13 +52,20 @@ result = self.hands.process(rgb_frame)
 
 ### (6) 手の動きに応じた指示を送信
 ```python
+# 移動量の定数
+MOVE_SPEED = 30
 commands = {
-    "Right": (30, 0, 0, 0),
-    "Left": (-30, 0, 0, 0),
-    "Down": (0, 0, -30, 0),
-    "Up": (0, 0, 30, 0)
+    "Right": (MOVE_SPEED, 0, 0, 0),
+    "Left": (-MOVE_SPEED, 0, 0, 0),
+    "Down": (0, 0, -MOVE_SPEED, 0),
+    "Up": (0, 0, MOVE_SPEED, 0),
+    "Still": (0, 0, 0, 0)  # 停止状態を明示
 }
-self.tello.send_rc_control(*commands.get(direction, (0, 0, 0, 0)))
+
+# コマンドを取得し、Telloに送信
+if direction in commands:
+    x, y, z, yaw = commands[direction]
+    self.tello.send_rc_control(x, y, z, yaw)
 ```
 検出した手の動きに応じて、 **Telloに移動コマンドを送信** します。
 
@@ -93,10 +100,12 @@ def main():
 ターミナルまたはコマンドプロンプトで以下のコマンドを実行します。
 
 ```bash
-python ファイル名.py
+python tello_hand_control.py
 ```
 
 `'t'` を押すと **離陸**、 `'l'` を押すと **着陸** するように設定しています。また、`'1'` を押すと **オートモードがON** になり、`'0'` を押すと **オートモードがOFF** になります。**オートモードがON** にすると、ドローンのカメラが手を動きを検出し、動かした方向にドローンが移動するようになります。
+
+**`'ESC'` キーを押すとプログラムが終了** します。
 
 ## 5. まとめ
 - **TelloドローンをPythonで制御**
@@ -104,5 +113,3 @@ python ファイル名.py
 - **手の動きに応じてドローンが上下左右に移動**
 - **キーボード操作で離陸・着陸などの操作も可能**
 - **'1' を押すとオートモードON、'0' を押すとオートモードOFF**
-
-このプログラムを応用すれば、 **ジェスチャーコントロールによるドローン操作** など、さらに面白い機能を追加できます！

@@ -129,13 +129,19 @@ class TelloControl:
 
     def _send_movement_command(self, direction):
         """ Telloへ移動コマンドを送信 """
+        # 移動量の定数
+        MOVE_SPEED = 30
         commands = {
-            "Right": (30, 0, 0, 0),
-            "Left": (-30, 0, 0, 0),
-            "Down": (0, 0, -30, 0),
-            "Up": (0, 0, 30, 0)
+            "Right": (MOVE_SPEED, 0, 0, 0),
+            "Left": (-MOVE_SPEED, 0, 0, 0),
+            "Down": (0, 0, -MOVE_SPEED, 0),
+            "Up": (0, 0, MOVE_SPEED, 0),
+            "Still": (0, 0, 0, 0)  # 停止状態を明示
         }
-        self.tello.send_rc_control(*commands.get(direction, (0, 0, 0, 0)))
+
+        # コマンドを取得し、Telloに送信
+        x, y, z, yaw = commands[direction]
+        self.tello.send_rc_control(x, y, z, yaw)
 
 
     def _send_periodic_command(self):
