@@ -132,10 +132,10 @@ class TelloControl:
         # 移動量の定数
         MOVE_SPEED = 30
         commands = {
-            "Right": (MOVE_SPEED, 0, 0, 0),
-            "Left": (-MOVE_SPEED, 0, 0, 0),
-            "Down": (0, 0, -MOVE_SPEED, 0),
-            "Up": (0, 0, MOVE_SPEED, 0),
+            "Right": (-MOVE_SPEED, 0, 0, 0),
+            "Left":  (MOVE_SPEED, 0, 0, 0),
+            "Down":  (0, 0, -MOVE_SPEED, 0),
+            "Up":    (0, 0, MOVE_SPEED, 0),
             "Still": (0, 0, 0, 0)  # 停止状態を明示
         }
 
